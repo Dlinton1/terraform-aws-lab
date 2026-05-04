@@ -1,77 +1,162 @@
-# Terraform AWS Free Tier Lab
+# Terraform AWS Free Tier Lab 🚀
 
 ## 📌 Overview
-This project provisions a basic AWS infrastructure using Terraform, following Infrastructure as Code (IaC) principles.
 
-The environment includes:
-- A custom VPC
-- A public subnet
-- Internet Gateway and route table
-- A free-tier EC2 instance
+This project provisions AWS infrastructure using Terraform with a modular design.
 
-All resources are designed to stay within the AWS Free Tier when used correctly.
+It creates:
 
----
+* A custom VPC (Virtual Private Cloud)
+* A public subnet
+* Internet connectivity (Internet Gateway + Route Table)
+* An EC2 instance (Free Tier eligible)
 
-## 🛠️ Technologies Used
-- Terraform
-- AWS (EC2, VPC, Networking)
-- Git & GitHub
-- SSH Authentication
+This project follows real-world DevOps practices by using reusable modules.
 
 ---
 
 ## 🧱 Architecture
-Terraform provisions the following:
 
-1. VPC (10.0.0.0/16)
-2. Public Subnet (10.0.1.0/24)
-3. Internet Gateway (for internet access)
-4. Route Table + Association
-5. EC2 Instance (t2.micro - Free Tier)
+```
+        ┌──────────────────────────────┐
+        │            AWS               │
+        │                              │
+        │   ┌───────────────┐          │
+        │   │     VPC       │          │
+        │   │ 10.0.0.0/16   │          │
+        │   └──────┬────────┘          │
+        │          │                   │
+        │   ┌──────▼────────┐          │
+        │   │    Subnet     │          │
+        │   │ 10.0.1.0/24   │          │
+        │   └──────┬────────┘          │
+        │          │                   │
+        │   ┌──────▼────────┐          │
+        │   │   EC2 (t2.micro) │       │
+        │   │   Ubuntu Linux   │       │
+        │   └───────────────┘          │
+        │                              │
+        │   Internet Gateway           │
+        │         │                    │
+        │         ▼                    │
+        │       Internet              │
+        └──────────────────────────────┘
+```
+
+---
+
+## 📁 Project Structure
+
+```
+terraform-aws-lab/
+│
+├── modules/
+│   ├── vpc/        # Network infrastructure
+│   └── ec2/        # EC2 instance
+│
+├── environments/
+│   └── dev/        # Deployment configuration
+│
+├── main.tf         # (if still present)
+├── variables.tf
+├── outputs.tf
+└── README.md
+```
+
+---
+
+## ⚙️ How It Works
+
+### 1. VPC Module
+
+Creates:
+
+* VPC
+* Subnet
+* Internet Gateway
+* Route Table
+
+### 2. EC2 Module
+
+Creates:
+
+* EC2 instance inside the subnet
+
+### 3. Environment (dev)
+
+Connects everything together:
+
+* Gets latest Ubuntu AMI
+* Passes subnet from VPC → EC2
 
 ---
 
 ## 🚀 How to Run
 
-### 1. Initialize Terraform
-bash terraform init 
+Navigate to environment:
 
-### 2. Preview changes
-bash terraform plan 
+```
+cd environments/dev
+```
 
-### 3. Apply infrastructure
-bash terraform apply 
+Initialize Terraform:
 
-Type yes when prompted.
+```
+terraform init
+```
 
----
+Preview changes:
 
-## 🧹 Destroy Resources (IMPORTANT)
-To avoid charges:
+```
+terraform plan
+```
 
-bash terraform destroy 
+Apply infrastructure:
 
----
+```
+terraform apply
+```
 
-## 💰 Cost Notes
-- Uses AWS Free Tier eligible resources
-- EC2 instance is t2.micro
-- No NAT Gateway or paid services included
+Destroy everything (IMPORTANT):
 
-⚠️ Always destroy resources after testing
-
----
-
-## 🎯 What I Learned
-- Infrastructure as Code using Terraform
-- AWS networking basics (VPC, subnets, routing)
-- Managing cloud resources safely within free tier
-- Git & SSH workflow for DevOps projects
+```
+terraform destroy
+```
 
 ---
 
-## 📎 Future Improvements
-- Convert into reusable Terraform modules
-- Add multiple environments (dev/prod)
-- Implement CI/CD using GitHub Action
+## 💰 Cost
+
+This project is designed to stay within AWS Free Tier:
+
+* EC2: t2.micro ✅
+* VPC/Subnet/IGW: Free ✅
+* No NAT Gateway (avoids charges) ✅
+
+⚠️ Always run `terraform destroy` when finished.
+
+---
+
+## 🧠 What I Learned
+
+* Infrastructure as Code (Terraform)
+* AWS networking basics (VPC, subnet, routing)
+* Modular Terraform design
+* How resources connect together
+* How to safely stay in free tier
+
+---
+
+## 🔥 Future Improvements
+
+* Add Security Groups (SSH/HTTP)
+* Add NGINX web server
+* CI/CD with GitHub Actions
+* Multiple environments (dev/prod)
+* Remote state (S3 + DynamoDB)
+
+---
+
+## 👤 Author
+
+Dominique Linton
