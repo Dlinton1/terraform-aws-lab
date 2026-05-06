@@ -1,3 +1,4 @@
-output "security_group_id" {
-  value = aws_security_group.ssh_http.id
+# Output subnet ID so other modules (like EC2) can use it
+output "subnet_id" {
+  value = aws_subnet.subnet.id
 }
