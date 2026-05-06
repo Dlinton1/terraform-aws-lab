@@ -1,29 +1,49 @@
 name: Terraform CI
 
+# 🚀 This defines WHEN the pipeline runs
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
+    branches: [ "main" ]   # Runs every time you push to main
+  pull_request:            # Also runs on pull requests before merging
 
 jobs:
   terraform:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # 🖥️ GitHub gives us a fresh Linux machine each run
 
     steps:
+      # 📥 STEP 1: Download your repository code into the runner
+      # This is like cloning your project onto a new computer
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      # 🔐 STEP 2: Log into AWS securely using GitHub Secrets
+      # Without this, Terraform cannot talk to AWS at all
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}         # stored in GitHub securely
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # stored in GitHub securely
+          aws-region: us-east-1
+
+      # ⚙️ STEP 3: Install Terraform on the runner machine
+      # This ensures Terraform commands are available
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      # 📦 STEP 4: Initialize Terraform
+      # Downloads providers (AWS, etc.) and prepares working directory
       - name: Terraform Init
         run: terraform init
         working-directory: environments/dev
 
+      # ✅ STEP 5: Validate Terraform code
+      # Checks for syntax errors (does NOT touch AWS)
       - name: Terraform Validate
         run: terraform validate
         working-directory: environments/dev
 
+      # 🔍 STEP 6: Show what Terraform will do (NO CHANGES MADE)
+      # This is a "preview" of infrastructure changes
       - name: Terraform Plan
         run: terraform plan
         working-directory: environments/dev
