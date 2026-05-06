@@ -1,21 +1,14 @@
-# Terraform local files
+# Terraform internal state (NEVER push)
 .terraform/
 
-# Terraform state files (VERY IMPORTANT)
+# State files (NEVER push)
 *.tfstate
 *.tfstate.*
 
-# Crash logs
-crash.log
-crash.*.log
-
-# Local variable files (may contain secrets)
+# Variable files (may contain secrets)
 terraform.tfvars
 terraform.tfvars.json
 
-# CLI config
-.terraform.lock.hcl
-
-# OS files (Mac/Windows junk)
+# OS files
 .DS_Store
 Thumbs.db
