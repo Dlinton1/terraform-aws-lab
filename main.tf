@@ -30,5 +30,5 @@ module "ec2" {
   instance_type  = "t2.micro"
   instance_name  = "terraform-dev-server"
 
-  subnet_id = module.vpc.subnet_id
+subnet_id = module.vpc.public_subnet_id
 }

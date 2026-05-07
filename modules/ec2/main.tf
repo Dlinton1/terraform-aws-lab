@@ -1,10 +1,18 @@
 # Create EC2 instance (virtual machine)
-resource "aws_instance" "app" {
-  ami           = var.ami_id        # OS image (Ubuntu)
-  instance_type = var.instance_type # Size (free tier = t2.micro)
-  subnet_id     = var.subnet_id     # Which network to place it in
+resource "aws_instance" "this" {
+  ami           = var.ami_id
+  instance_type = var.instance_type
+  subnet_id     = var.subnet_id
+
+  user_data = <<-EOF
+    #!/bin/bash
+    sudo apt update -y
+    sudo apt install -y apache2
+    sudo systemctl start apache2
+    echo "DevOps Server Live" > /var/www/html/index.html
+  EOF
 
   tags = {
-    Name = var.instance_name # Name shown in AWS console
+    Name = var.instance_name
   }
 }

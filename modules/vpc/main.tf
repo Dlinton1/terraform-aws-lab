@@ -1,34 +1,45 @@
-# Create a VPC (your own private network in AWS)
-resource "aws_vpc" "main" {
-  cidr_block = var.vpc_cidr # Defines IP range for the network
+# Creates your private network in AWS
+resource "aws_vpc" "this" {
+  cidr_block = var.vpc_cidr
+
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  tags = {
+    Name = "devops-vpc"
+  }
 }
 
-# Create a subnet inside the VPC
-resource "aws_subnet" "subnet" {
-  vpc_id                  = aws_vpc.main.id # Connect subnet to VPC
-  cidr_block              = var.subnet_cidr   # Smaller IP range inside VPC
-  map_public_ip_on_launch = true            # Gives instances public IPs
+# Public subnet inside VPC
+resource "aws_subnet" "public" {
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = var.subnet_cidr
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "devops-public-subnet"
+  }
 }
 
-# Create Internet Gateway (allows internet access)
-resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.main.id # Attach to VPC
+# Internet access gateway
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.this.id
 }
 
-# Create Route Table (controls traffic rules)
+# Route table (traffic rules)
 resource "aws_route_table" "rt" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.this.id
 }
 
-# Add route to internet (0.0.0.0 = everywhere)
-resource "aws_route" "route" {
+# Route internet traffic out
+resource "aws_route" "internet" {
   route_table_id         = aws_route_table.rt.id
-  destination_cidr_block = "0.0.0.0/0"           # All traffic
-  gateway_id             = aws_internet_gateway.gw.id # Send to internet
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.igw.id
 }
 
-# Connect subnet to route table
-resource "aws_route_table_association" "a" {
-  subnet_id      = aws_subnet.subnet.id
+# Attach subnet to route table
+resource "aws_route_table_association" "assoc" {
+  subnet_id      = aws_subnet.public.id
   route_table_id = aws_route_table.rt.id
 }
