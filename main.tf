@@ -20,12 +20,20 @@ module "vpc" {
   source = "./modules/vpc"
 }
 
-# Call EC2 module (builds server)
 module "ec2" {
+
+  # Use EC2 module folder
   source = "./modules/ec2"
 
-  ami_id        = data.aws_ami.ubuntu.id   # Use latest Ubuntu
-  instance_type = "t2.micro"               # Free tier
-  subnet_id     = module.vpc.subnet_id     # Connect EC2 to VPC subnet
+  # Latest Ubuntu AMI from AWS
+  ami_id = data.aws_ami.ubuntu.id
+
+  # Free-tier server size
+  instance_type = "t2.micro"
+
+  # Put EC2 inside VPC subnet
+  subnet_id = module.vpc.subnet_id
+
+  # Name shown in AWS console
   instance_name = "terraform-free-lab"
 }

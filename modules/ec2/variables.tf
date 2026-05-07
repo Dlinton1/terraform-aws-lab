@@ -1,11 +1,26 @@
-# AMI ID (which OS image to use)
-variable "ami_id" {}
+# EC2 MODULE INPUTS
+# These are values the EC2 module needs to create a server
 
-# EC2 size/type
-variable "instance_type" {}
+# AMI = operating system image (Ubuntu, etc.)
+variable "ami_id" {
+  description = "AMI ID for EC2"
+  type        = string
+}
 
-# Subnet to place EC2 inside
-variable "subnet_id" {}
+# Instance size (free tier = t2.micro)
+variable "instance_type" {
+  description = "EC2 size"
+  type        = string
+}
 
-# Name of EC2 instance
-variable "instance_name" {}
+# Where the server lives inside AWS network (VPC subnet)
+variable "subnet_id" {
+  description = "Subnet for EC2"
+  type        = string
+}
+
+# Name tag shown in AWS console (just a label)
+variable "instance_name" {
+  description = "EC2 name tag"
+  type        = string
+}
