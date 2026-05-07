@@ -1,12 +1,12 @@
 # Create a VPC (your own private network in AWS)
 resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16" # Defines IP range for the network
+  cidr_block = var.vpc_cidr # Defines IP range for the network
 }
 
 # Create a subnet inside the VPC
 resource "aws_subnet" "subnet" {
   vpc_id                  = aws_vpc.main.id # Connect subnet to VPC
-  cidr_block              = "10.0.1.0/24"   # Smaller IP range inside VPC
+  cidr_block              = var.subnet_cidr   # Smaller IP range inside VPC
   map_public_ip_on_launch = true            # Gives instances public IPs
 }
 

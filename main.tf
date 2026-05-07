@@ -18,10 +18,13 @@ data "aws_ami" "ubuntu" {
 # Call VPC module (builds networking)
 module "vpc" {
   source = "./modules/vpc"
+
+  vpc_cidr    = "10.0.0.0/16"
+  subnet_cidr = "10.0.1.0/24"
 }
 
 module "ec2" {
-  source = "../../modules/ec2"
+  source = "./modules/ec2"
 
   # AMI for EC2 instance
   ami_id = data.aws_ami.ubuntu.id
