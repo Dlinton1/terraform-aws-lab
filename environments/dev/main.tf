@@ -10,6 +10,19 @@ data "aws_ami" "ubuntu" {
   }
 }
 
+# VPC MODULE
+# Creates networking infrastructure for AWS
+
+module "vpc" {
+  source = "../../modules/vpc"
+
+  # Main private network range
+  vpc_cidr = "10.0.0.0/16"
+
+  # Smaller network inside VPC
+  subnet_cidr = "10.0.1.0/24"
+}
+
 # EC2 MODULE
 # This calls our reusable EC2 template from ../../modules/ec2
 module "ec2" {
