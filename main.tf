@@ -21,19 +21,14 @@ module "vpc" {
 }
 
 module "ec2" {
+  source = "../../modules/ec2"
 
-  # Use EC2 module folder
-  source = "./modules/ec2"
-
-  # Latest Ubuntu AMI from AWS
+  # AMI for EC2 instance
   ami_id = data.aws_ami.ubuntu.id
 
-  # Free-tier server size
-  instance_type = "t2.micro"
+  # Name tag for EC2 instance
+  instance_name = "terraform-dev-server"
 
-  # Put EC2 inside VPC subnet
-  subnet_id = module.vpc.subnet_id
-
-  # Name shown in AWS console
-  instance_name = "terraform-free-lab"
+  # Optional depending on your module (ONLY include if module supports it)
+  vpc_security_group_id = module.vpc.default_security_group_id
 }
