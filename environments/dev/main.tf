@@ -35,7 +35,7 @@ module "ec2" {
   instance_type = "t2.micro"
 
   # Which subnet to place server into
-  subnet_id = module.vpc.subnet_id
+  subnet_id = module.vpc.public_subnet_id
 
   # Name shown in AWS console
   instance_name = "terraform-dev-server"
