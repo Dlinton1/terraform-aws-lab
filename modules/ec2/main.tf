@@ -4,6 +4,9 @@ resource "aws_instance" "this" {
   instance_type = var.instance_type
   subnet_id     = var.subnet_id
 
+  # REMOVE THIS LINE FOR NOW:
+  # vpc_security_group_ids = [var.security_group_id]
+
   user_data = <<-EOF
     #!/bin/bash
     sudo apt update -y
