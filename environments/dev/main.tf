@@ -23,8 +23,13 @@ module "vpc" {
   subnet_cidr = "10.0.1.0/24"
 }
 
-# EC2 MODULE
-# This calls our reusable EC2 template from ../../modules/ec2
+module "security_group" {
+  source = "../../modules/security-group"
+
+  # Connect SG into VPC
+  vpc_id = module.vpc.vpc_id
+}
+
 module "ec2" {
   source = "../../modules/ec2"
 
@@ -39,4 +44,6 @@ module "ec2" {
 
   # Name shown in AWS console
   instance_name = "terraform-dev-server"
+
+  security_group_id = module.security_group.security_group_id
 }
