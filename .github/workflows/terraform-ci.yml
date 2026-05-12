@@ -44,7 +44,7 @@ jobs:
 
       # Security scan repository
       - name: Run Trivy Scan
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: fs
           scan-ref: .
