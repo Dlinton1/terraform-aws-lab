@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project demonstrates my hands-on experience building and managing cloud infrastructure, containerized applications, and DevOps automation.
+This project demonstrates my hands-on experience building and managing cloud infrastructure, containerized applications, monitoring solutions, databases, and DevSecOps automation.
 
 The environment was built using AWS, Terraform, Docker, GitHub Actions, and Linux administration practices.
 
@@ -11,18 +11,31 @@ The goal of this project is to simulate real-world infrastructure workflows incl
 - Infrastructure as Code (IaC)
 - Cloud resource provisioning
 - Container deployment
-- Service monitoring
+- Monitoring and observability
 - Database management
+- DevSecOps
 - CI/CD automation
 
+---
 
 # Architecture
 
-## Cloud Infrastructure
+```text
+Internet
+    │
+    ▼
+AWS EC2 (Ubuntu Linux)
+    │
+    ▼
+Docker Engine
+    ├── Portainer
+    ├── Uptime Kuma
+    ├── Netdata
+    ├── Nginx Proxy Manager
+    └── PostgreSQL
+```
 
-AWS EC2 Ubuntu Server
-
-
+---
 
 # Project 1 — Terraform AWS Infrastructure
 
@@ -35,9 +48,9 @@ Provisioned AWS infrastructure using Terraform Infrastructure as Code.
 - Custom VPC
 - Public subnet
 - Internet Gateway
-- Route tables
+- Route table
 - Security groups
-- EC2 Ubuntu instance
+- EC2 instance
 
 ## Terraform Skills Practiced
 
@@ -48,70 +61,67 @@ Provisioned AWS infrastructure using Terraform Infrastructure as Code.
 - terraform init
 - terraform validate
 - terraform plan
-- Terraform state management
+- Infrastructure as Code
 
+## CI/CD
 
-## CI/CD Integration
+GitHub Actions automatically performs:
 
-GitHub Actions automatically validates Terraform changes.
+- terraform init
+- terraform validate
+- terraform plan
 
-Pipeline workflow:
+This ensures infrastructure changes are validated before deployment.
 
+---
 
-The pipeline prevents invalid Terraform changes from being merged.
-
-
-# Project 2 — Docker Self Hosted Infrastructure
+# Project 2 — Docker Self-Hosted Infrastructure
 
 ## Overview
 
-Deployed and managed containerized applications on AWS EC2 using Docker Compose.
+Built a self-hosted Docker environment on AWS EC2 using Docker Compose.
 
 ## Services Deployed
 
 ### Portainer
 
 Purpose:
-- Container management dashboard
-- Visual Docker administration
 
-
-### Uptime Kuma
-
-Purpose:
-- Application uptime monitoring
-- Service availability checks
-
-
-### Netdata
-
-Purpose:
-- Infrastructure monitoring
-- CPU, memory, disk, and network metrics
-
+- Docker container management
+- Container logs
+- Resource monitoring
+- Visual administration
 
 ### Nginx Proxy Manager
 
 Purpose:
-- Reverse proxy management
-- Future SSL certificate automation
 
+- Reverse proxy
+- SSL management (future)
+- Host routing
+
+### Homepage
+
+Purpose:
+
+- Dashboard for self-hosted applications
 
 ## Docker Skills Practiced
 
-- Container lifecycle management
 - Docker Compose
-- Container networking
+- Docker networking
+- Container lifecycle
 - Image management
-- Troubleshooting containers
-- Reading container logs
+- Troubleshooting
+- Linux container administration
 
+---
 
-# Project 3 — PostgreSQL Database Container
+# Project 3 — PostgreSQL Database
 
 ## Overview
 
-Deployed PostgreSQL as a containerized database using Docker Compose.
+Deployed PostgreSQL using Docker Compose with persistent Docker volumes.
 
 ## Technologies
 
@@ -120,34 +130,102 @@ Deployed PostgreSQL as a containerized database using Docker Compose.
 - Docker Compose
 - Ubuntu Linux
 
-
 ## Skills Practiced
 
-- Database containers
+- Database deployment
 - Persistent storage
 - SQL fundamentals
+- Docker volumes
 - Application/database separation
 
-
-## Database Persistence
-
-Configured Docker volumes to ensure database data survives container restarts.
-
-Architecture:
-
-
-
-## SQL Operations Practiced
-
-Created database tables:
+## SQL Operations
 
 - CREATE
 - INSERT
 - SELECT
 
+Verified data persistence by restarting the PostgreSQL container without data loss.
 
-Verified database persistence by stopping and restarting the PostgreSQL container.
+---
 
+# Project 4 — Monitoring & Infrastructure Operations
+
+## Overview
+
+Implemented infrastructure monitoring and operational dashboards for a self-hosted environment.
+
+## Monitoring Stack
+
+### Uptime Kuma
+
+Purpose:
+
+- Website monitoring
+- Service availability
+- Health checks
+- Uptime reporting
+
+### Netdata
+
+Purpose:
+
+- CPU monitoring
+- Memory monitoring
+- Disk utilization
+- Network monitoring
+- Docker container metrics
+
+### Nginx Proxy Manager
+
+Purpose:
+
+- Reverse proxy management
+- Centralized web access
+- Future SSL certificate management
+
+## Skills Practiced
+
+- Infrastructure monitoring
+- Service health checks
+- Performance analysis
+- Linux server administration
+- Docker service management
+- Operational troubleshooting
+
+---
+
+# Project 5 — Trivy Security Scanning (In Progress)
+
+## Overview
+
+Implementing DevSecOps security scanning using Trivy to identify vulnerabilities before deployment.
+
+## Skills Practiced
+
+- Vulnerability scanning
+- CVE identification
+- Container security
+- DevSecOps
+- GitHub Actions security gates
+
+## Planned Workflow
+
+```text
+GitHub Push
+      │
+      ▼
+Terraform Validation
+      │
+      ▼
+Trivy Security Scan
+      │
+      ▼
+Pass → Continue
+
+Fail → Block Deployment
+```
+
+---
 
 # Tools Used
 
@@ -156,11 +234,9 @@ Verified database persistence by stopping and restarting the PostgreSQL containe
 - AWS EC2
 - AWS VPC
 
-
 ## Infrastructure as Code
 
 - Terraform
-
 
 ## Containers
 
@@ -168,43 +244,51 @@ Verified database persistence by stopping and restarting the PostgreSQL containe
 - Docker Compose
 - Portainer
 
-
 ## Monitoring
 
 - Uptime Kuma
 - Netdata
 
-
 ## Database
 
 - PostgreSQL
 
+## DevSecOps
+
+- Trivy (In Progress)
 
 ## CI/CD
 
 - GitHub Actions
 
+---
 
-# Future Improvements
+# Future Roadmap
 
-Planned upgrades:
+Upcoming projects include:
 
-- Trivy container security scanning
-- Docker image vulnerability management
-- Terraform remote state using S3
-- DynamoDB state locking
-- Dev/Staging/Production environments
-- Kubernetes deployment
-- Automated application deployments
+- Terraform Remote State (S3)
+- DynamoDB State Locking
+- Multi-environment deployments (Dev / Staging / Production)
+- Kubernetes
+- Automated deployments
+- SSL certificates
+- Domain integration
+- Infrastructure backups
 
+---
 
 # Skills Demonstrated
 
-- Linux administration
-- Cloud infrastructure
+- AWS Cloud Infrastructure
+- Linux Administration
+- Terraform
 - Infrastructure as Code
-- Container management
-- Monitoring
-- Database administration
-- CI/CD fundamentals
-- DevOps troubleshooting
+- Docker
+- Docker Compose
+- PostgreSQL
+- Monitoring & Observability
+- GitHub Actions
+- CI/CD
+- DevSecOps Fundamentals
+- Infrastructure Troubleshooting
