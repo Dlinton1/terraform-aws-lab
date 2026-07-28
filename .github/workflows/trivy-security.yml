@@ -1,6 +1,5 @@
 name: Trivy Security Scan
 
-# Runs security scan whenever code is pushed
 on:
   push:
     branches:
@@ -11,28 +10,25 @@ jobs:
 
   security-scan:
 
-    # GitHub provides a temporary Linux machine
     runs-on: ubuntu-latest
-
 
     steps:
 
-      # Downloads repository files
       - name: Checkout Repository
         uses: actions/checkout@v4
 
 
-      # Scans Docker image for vulnerabilities
       - name: Run Trivy Scan
         uses: aquasecurity/trivy-action@master
 
         with:
 
-          # Image being scanned
           image-ref: postgres:17-alpine
-
-          # Only fail on serious issues
+          # Only check HIGH and CRITICAL vulnerabilities
           severity: HIGH,CRITICAL
-
-          # Fail workflow if issues are found
+          
+          # Ignore vulnerabilities that do not have fixes available
+          ignore-unfixed: true
+          
+          # Fail workflow if fixable HIGH or CRITICAL issues are found
           exit-code: 1
