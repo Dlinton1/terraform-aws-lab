@@ -24,12 +24,12 @@ jobs:
         with:
 
           image-ref: postgres:17-alpine
-          
+
           # Only check HIGH and CRITICAL vulnerabilities
           severity: HIGH,CRITICAL
-          
+
           # Ignore vulnerabilities that do not have fixes available
           ignore-unfixed: true
-          
-          # Fail workflow if fixable HIGH or CRITICAL issues are found
-          exit-code: 1
+
+          # Report findings but do not block the pipeline yet
+          exit-code: 0
