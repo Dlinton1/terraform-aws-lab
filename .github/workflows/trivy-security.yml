@@ -24,6 +24,7 @@ jobs:
         with:
 
           image-ref: postgres:17-alpine
+          
           # Only check HIGH and CRITICAL vulnerabilities
           severity: HIGH,CRITICAL
           
