@@ -2,29 +2,48 @@
 
 ## Overview
 
-This project demonstrates my hands-on experience building and managing cloud infrastructure, containerized applications, monitoring solutions, databases, and DevSecOps automation.
+This project demonstrates my hands-on experience building and managing cloud infrastructure, containerized applications, monitoring solutions, databases, security automation, and DevOps workflows.
 
-The environment was built using AWS, Terraform, Docker, GitHub Actions, and Linux administration practices.
+The environment was built using:
+
+* AWS
+* Terraform
+* Docker
+* GitHub Actions
+* Linux administration
+* DevSecOps security tooling
 
 The goal of this project is to simulate real-world infrastructure workflows including:
 
-- Infrastructure as Code (IaC)
-- Cloud resource provisioning
-- Container deployment
-- Monitoring and observability
-- Database management
-- DevSecOps
-- CI/CD automation
+* Infrastructure as Code (IaC)
+* Cloud resource provisioning
+* Remote Terraform state management
+* Container deployment
+* Monitoring and observability
+* Database management
+* Security automation
+* CI/CD automation
 
 ---
 
 # Architecture
 
 ```text
-Internet
+Developer
     │
     ▼
-AWS EC2 (Ubuntu Linux)
+GitHub Repository
+    │
+    ├── GitHub Actions
+    │       │
+    │       ├── Terraform Validation
+    │       └── Trivy Security Scanning
+    │
+    ▼
+AWS Cloud Infrastructure
+    │
+    ▼
+EC2 Ubuntu Server
     │
     ▼
 Docker Engine
@@ -45,33 +64,31 @@ Provisioned AWS infrastructure using Terraform Infrastructure as Code.
 
 ## Components Built
 
-- Custom VPC
-- Public subnet
-- Internet Gateway
-- Route table
-- Security groups
-- EC2 instance
+* Custom VPC
+* Public subnet
+* Internet Gateway
+* Route table
+* Security groups
+* EC2 instance
 
 ## Terraform Skills Practiced
 
-- Terraform modules
-- Variables
-- Outputs
-- Data sources
-- terraform init
-- terraform validate
-- terraform plan
-- Infrastructure as Code
+* Terraform modules
+* Variables
+* Outputs
+* Data sources
+* Resource management
+* Infrastructure as Code workflows
 
-## CI/CD
+Terraform commands practiced:
 
-GitHub Actions automatically performs:
-
-- terraform init
-- terraform validate
-- terraform plan
-
-This ensures infrastructure changes are validated before deployment.
+```bash
+terraform init
+terraform validate
+terraform plan
+terraform apply
+terraform destroy
+```
 
 ---
 
@@ -87,33 +104,33 @@ Built a self-hosted Docker environment on AWS EC2 using Docker Compose.
 
 Purpose:
 
-- Docker container management
-- Container logs
-- Resource monitoring
-- Visual administration
+* Docker container management
+* Container logs
+* Resource monitoring
+* Visual administration
 
 ### Nginx Proxy Manager
 
 Purpose:
 
-- Reverse proxy
-- SSL management (future)
-- Host routing
+* Reverse proxy
+* Service routing
+* Future SSL management
 
 ### Homepage
 
 Purpose:
 
-- Dashboard for self-hosted applications
+* Self-hosted application dashboard
 
 ## Docker Skills Practiced
 
-- Docker Compose
-- Docker networking
-- Container lifecycle
-- Image management
-- Troubleshooting
-- Linux container administration
+* Docker Compose
+* Container networking
+* Image management
+* Container lifecycle management
+* Linux container administration
+* Troubleshooting
 
 ---
 
@@ -121,30 +138,32 @@ Purpose:
 
 ## Overview
 
-Deployed PostgreSQL using Docker Compose with persistent Docker volumes.
+Deployed PostgreSQL using Docker Compose with persistent storage.
 
 ## Technologies
 
-- PostgreSQL 17
-- Docker
-- Docker Compose
-- Ubuntu Linux
+* PostgreSQL 17
+* Docker
+* Docker Compose
+* Ubuntu Linux
 
 ## Skills Practiced
 
-- Database deployment
-- Persistent storage
-- SQL fundamentals
-- Docker volumes
-- Application/database separation
+* Database deployment
+* Persistent volumes
+* SQL fundamentals
+* Containerized databases
+* Application/database separation
 
 ## SQL Operations
 
-- CREATE
-- INSERT
-- SELECT
+Practiced:
 
-Verified data persistence by restarting the PostgreSQL container without data loss.
+* CREATE
+* INSERT
+* SELECT
+
+Verified database persistence by restarting containers without losing stored data.
 
 ---
 
@@ -152,77 +171,138 @@ Verified data persistence by restarting the PostgreSQL container without data lo
 
 ## Overview
 
-Implemented infrastructure monitoring and operational dashboards for a self-hosted environment.
+Implemented monitoring and operational visibility for the self-hosted environment.
 
 ## Monitoring Stack
 
 ### Uptime Kuma
 
-Purpose:
+Used for:
 
-- Website monitoring
-- Service availability
-- Health checks
-- Uptime reporting
+* Website monitoring
+* Service health checks
+* Availability tracking
 
 ### Netdata
 
-Purpose:
+Used for:
 
-- CPU monitoring
-- Memory monitoring
-- Disk utilization
-- Network monitoring
-- Docker container metrics
+* CPU monitoring
+* Memory usage
+* Disk utilization
+* Network metrics
+* Docker container monitoring
 
 ### Nginx Proxy Manager
 
-Purpose:
+Used for:
 
-- Reverse proxy management
-- Centralized web access
-- Future SSL certificate management
+* Reverse proxy management
+* Centralized service access
 
 ## Skills Practiced
 
-- Infrastructure monitoring
-- Service health checks
-- Performance analysis
-- Linux server administration
-- Docker service management
-- Operational troubleshooting
+* Infrastructure monitoring
+* Service health checks
+* Linux administration
+* Performance troubleshooting
+* Docker operations
 
 ---
 
-# Project 5 — Trivy Security Scanning (In Progress)
+# Project 5 — Trivy DevSecOps Security Scanning
 
 ## Overview
 
-Implementing DevSecOps security scanning using Trivy to identify vulnerabilities before deployment.
+Implemented automated vulnerability scanning using Trivy integrated with GitHub Actions.
 
-## Skills Practiced
+The workflow scans container images for security vulnerabilities and blocks the workflow when high-risk issues are detected.
 
-- Vulnerability scanning
-- CVE identification
-- Container security
-- DevSecOps
-- GitHub Actions security gates
-
-## Planned Workflow
+## Security Workflow
 
 ```text
 GitHub Push
       │
       ▼
-Terraform Validation
+GitHub Actions Trigger
       │
       ▼
-Trivy Security Scan
+Trivy Container Scan
       │
       ▼
-Pass → Continue
+HIGH / CRITICAL Vulnerabilities
+      │
+      ├── Found → Fail Workflow
+      │
+      └── None → Continue
+```
 
-Fail → Block Deployment
+## Skills Practiced
+
+* DevSecOps principles
+* Container vulnerability scanning
+* CVE identification
+* GitHub Actions automation
+* Security gates in CI/CD pipelines
+
+---
+
+# Project 6 — Terraform Remote State Management
+
+## Overview
+
+Implemented Terraform remote state management using AWS services to support team-based infrastructure workflows.
+
+## Components Built
+
+### Amazon S3 Backend
+
+Used S3 to centrally store Terraform state files.
+
+Configuration:
+
+* Bucket: terraform-devops-state-dlinton
+* Region: us-east-1
+* State Key: dev/terraform.tfstate
+* Encryption enabled
+
+### DynamoDB State Locking
+
+Implemented DynamoDB locking to prevent multiple Terraform operations from modifying infrastructure state simultaneously.
+
+## Terraform Remote State Workflow
+
+```text
+Developer
+    │
+    ▼
+Terraform Command
+    │
+    ▼
+DynamoDB Lock
+    │
+    ▼
+S3 Terraform State
+    │
+    ▼
+AWS Infrastructure
+```
+
+## Skills Practiced
+
+* Terraform backend configuration
+* Remote state management
+* State migration
+* Terraform modules
+* Team collaboration workflows
+* Infrastructure safety practices
+
+Commands practiced:
+
+```bash
+terraform init -migrate-state
+terraform state list
+terraform plan
 ```
 
 ---
@@ -231,64 +311,72 @@ Fail → Block Deployment
 
 ## Cloud
 
-- AWS EC2
-- AWS VPC
+* AWS EC2
+* AWS VPC
+* Amazon S3
+* Amazon DynamoDB
 
 ## Infrastructure as Code
 
-- Terraform
+* Terraform
 
 ## Containers
 
-- Docker
-- Docker Compose
-- Portainer
+* Docker
+* Docker Compose
+* Portainer
 
 ## Monitoring
 
-- Uptime Kuma
-- Netdata
+* Uptime Kuma
+* Netdata
 
 ## Database
 
-- PostgreSQL
+* PostgreSQL
 
 ## DevSecOps
 
-- Trivy (In Progress)
+* Trivy
 
 ## CI/CD
 
-- GitHub Actions
+* GitHub Actions
 
 ---
 
 # Future Roadmap
 
-Upcoming projects include:
+Upcoming projects:
 
-- Terraform Remote State (S3)
-- DynamoDB State Locking
-- Multi-environment deployments (Dev / Staging / Production)
-- Kubernetes
-- Automated deployments
-- SSL certificates
-- Domain integration
-- Infrastructure backups
+* Kubernetes fundamentals
+* Kubernetes Pods and Deployments
+* Kubernetes Services
+* Application scaling
+* Container orchestration
+* Automated Kubernetes deployments
+* Multi-environment Terraform deployments
+* SSL certificates
+* Domain integration
+* Infrastructure backups
 
 ---
 
 # Skills Demonstrated
 
-- AWS Cloud Infrastructure
-- Linux Administration
-- Terraform
-- Infrastructure as Code
-- Docker
-- Docker Compose
-- PostgreSQL
-- Monitoring & Observability
-- GitHub Actions
-- CI/CD
-- DevSecOps Fundamentals
-- Infrastructure Troubleshooting
+* AWS Cloud Infrastructure
+* Linux Administration
+* Terraform
+* Terraform Modules
+* Remote State Management
+* Infrastructure as Code
+* Docker
+* Docker Compose
+* PostgreSQL
+* Monitoring & Observability
+* GitHub Actions
+* CI/CD Pipelines
+* DevSecOps Fundamentals
+* Vulnerability Scanning
+* Cloud Troubleshooting
+* Infrastructure Automation

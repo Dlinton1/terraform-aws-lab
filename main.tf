@@ -1,34 +1,84 @@
-# Configure AWS provider (which cloud + region)
+# AWS Provider Configuration
+# Tells Terraform which cloud provider to use
+
 provider "aws" {
+
   region = "us-east-1"
+
 }
 
-# Get latest Ubuntu AMI automatically (no hardcoding)
+
+# Find latest Ubuntu 22.04 AMI automatically
+# Prevents hardcoding old images
+
 data "aws_ami" "ubuntu" {
+
   most_recent = true
 
-  owners = ["099720109477"] # Official Ubuntu owner
+  owners = [
+    "099720109477"
+  ]
+
 
   filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+
+    name = "name"
+
+    values = [
+      "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"
+    ]
+
   }
+
 }
 
-# Call VPC module (builds networking)
+
+
+# Create VPC Infrastructure
+
 module "vpc" {
+
   source = "./modules/vpc"
 
-  vpc_cidr    = "10.0.0.0/16"
+
+  # Network range
+
+  vpc_cidr = "10.0.0.0/16"
+
+
+  # Public subnet
+
   subnet_cidr = "10.0.1.0/24"
+
 }
 
+
+
+
+# Create EC2 Server
+
 module "ec2" {
+
   source = "./modules/ec2"
 
-  ami_id         = data.aws_ami.ubuntu.id
-  instance_type  = "t2.micro"
-  instance_name  = "terraform-dev-server"
 
-subnet_id = module.vpc.public_subnet_id
+  # Operating system
+  ami_id = data.aws_ami.ubuntu.id
+
+
+  # Free tier instance size
+  instance_type = "t2.micro"
+
+
+  # Server name
+  instance_name = "terraform-dev-server"
+
+
+  # Place EC2 inside subnet
+  subnet_id = module.vpc.public_subnet_id
+
+
+  # Attach security group from VPC module
+  security_group_id = module.vpc.security_group_id
+
 }
