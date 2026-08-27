@@ -1,0 +1,6 @@
+init_config:
+
+instances:
+  - status_url: http://nginx/status
+    ping_url: http://nginx/ping
+    ping_reply: pong

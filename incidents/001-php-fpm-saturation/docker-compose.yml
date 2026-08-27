@@ -1,0 +1,41 @@
+services:
+
+  php:
+    image: php:8.3-fpm
+
+    volumes:
+      - ./app:/var/www/html
+      - ./www.conf:/usr/local/etc/php-fpm.d/www.conf
+
+
+  nginx:
+    image: nginx:alpine
+
+    ports:
+      - "8080:80"
+
+    volumes:
+      - ./app:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+
+    depends_on:
+      - php
+
+
+  datadog:
+    image: registry.datadoghq.com/agent:7
+
+    environment:
+      DD_API_KEY: ${DD_API_KEY}
+      DD_SITE: ${DD_SITE}
+      DD_HOSTNAME: php-fpm-observability-lab
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - ./datadog/conf.d/php_fpm.d/conf.yaml:/etc/datadog-agent/conf.d/php_fpm.d/conf.yaml:ro
+
+    depends_on:
+      - nginx
+      - php
