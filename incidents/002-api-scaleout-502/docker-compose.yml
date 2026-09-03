@@ -1,0 +1,26 @@
+services:
+
+  php:
+    image: php:8.3-fpm
+    container_name: scaleout-php
+    volumes:
+      - ./app:/var/www/html
+    networks:
+      - scaleout-lab
+
+  nginx:
+    image: nginx:alpine
+    container_name: scaleout-nginx
+    ports:
+      - "8081:80"
+    volumes:
+      - ./app:/var/www/html
+      - ./nginx/site.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+    networks:
+      - scaleout-lab
+
+networks:
+  scaleout-lab:
+    driver: bridge
